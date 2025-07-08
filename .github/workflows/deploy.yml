@@ -30,6 +30,10 @@ jobs:
         flutter pub get
         flutter build web --release
 
+    - name: Adjust base href for GitHub Pages
+      run: |
+        sed -i 's|<base href="/">|<base href="/flutter_ck_dashboard/">|' build/web/index.html
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
