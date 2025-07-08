@@ -1,0 +1,39 @@
+# .github/workflows/deploy.yml
+name: Deploy Flutter Web with .env
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 'stable'
+
+    # สร้างไฟล์ .env จากค่า GitHub Secrets
+    - name: Generate .env
+      run: |
+        echo "APPWRITE_ENDPOINT=${{ secrets.APPWRITE_ENDPOINT }}" >> .env
+        echo "APPWRITE_PROJECT=${{ secrets.APPWRITE_PROJECT }}" >> .env
+        echo "NEXT_SERVER=${{ secrets.NEXT_SERVER }}" >> .env
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+        echo "WEBSOCKET_URL=${{ secrets.WEBSOCKET_URL }}" >> .env
+        echo "JWT_ISSUER=${{ secrets.JWT_ISSUER }}" >> .env
+
+    - name: Flutter build web
+      run: |
+        flutter pub get
+        flutter build web --release
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./build/web
