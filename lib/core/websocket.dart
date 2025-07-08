@@ -1,0 +1,74 @@
+// websocket_service.dart
+import 'dart:async';
+import 'dart:convert';
+import 'package:ck_dashboard/core/logger.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/status.dart' as status;
+
+class WebSocketService {
+  final Duration reconnectDelay;
+  late WebSocketChannel _channel;
+  Map<String, dynamic>? _lastSent;
+  Timer? _pingTimer;
+  final _inController = StreamController<Map<String, dynamic>>.broadcast();
+  bool _closed = false;
+  final Uri uri = Uri.parse(
+    dotenv.env['WEBSOCKET_URL'] ??
+        'wss://demo.mylaos.life/api/calculation/realtime',
+  );
+
+  WebSocketService({this.reconnectDelay = const Duration(seconds: 2)}) {
+    _connectLoop();
+  }
+
+  Stream<Map<String, dynamic>> get stream => _inController.stream;
+
+  void send(Map<String, dynamic> msg, bool keep) {
+    if (_closed) return;
+
+    if (keep) {
+      _lastSent = msg;
+    }
+    _channel.sink.add(jsonEncode(msg));
+  }
+
+  Future<void> close() async {
+    _closed = true;
+    _pingTimer?.cancel();
+    await _channel.sink.close(status.normalClosure);
+    await _inController.close();
+  }
+
+  void _connectLoop() async {
+    while (!_closed) {
+      try {
+        _channel = WebSocketChannel.connect(uri);
+        logger.i('✅ WebSocket connected to $uri');
+
+        _pingTimer = Timer.periodic(Duration(seconds: 30), (_) {
+          if (!_closed) {
+            // logger.d('Sending ping to WebSocket');
+            _channel.sink.add(jsonEncode({'action': 'ping'}));
+          }
+        });
+        if (_lastSent != null) {
+          _channel.sink.add(jsonEncode(_lastSent));
+        }
+        await for (final raw in _channel.stream) {
+          final data = jsonDecode(raw as String) as Map<String, dynamic>;
+          _inController.add(data);
+        }
+
+        _pingTimer?.cancel();
+        logger.w('WebSocket closed by server');
+      } catch (e, st) {
+        logger.e('WebSocket error:', error: e, stackTrace: st);
+      }
+      if (!_closed) {
+        logger.i('Reconnecting in $reconnectDelay...');
+        await Future.delayed(reconnectDelay);
+      }
+    }
+  }
+}
