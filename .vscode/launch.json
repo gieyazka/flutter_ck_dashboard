@@ -1,0 +1,21 @@
+// .vscode/launch.json
+{
+  "configurations": [
+    {
+      "name": "Flutter Debug with Env",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--web-hostname=localhost",
+        "--web-port=1800",
+        "--dart-define=APPWRITE_ENDPOINT=https://baas-dev.moevedigital.com/v1",
+        "--dart-define=APPWRITE_PROJECT=667afb24000fbd66b4df",
+        "--dart-define=NEXT_SERVER=https://demo.mylaos.life/",
+        "--dart-define=JWT_SECRET=T0LPZL+X1Faej0wikHcMGazu9BilhgQ6vBMxckEFmvvLMkPexH9MCG1x/GcjeSnF",
+        "--dart-define=JWT_ISSUER=ck_dashboard",
+        "--dart-define=WEBSOCKET_URL=wss://demo.mylaos.life/api/calculation/realtime"
+      ]
+    }
+  ]
+}

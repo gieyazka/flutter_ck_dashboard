@@ -2,9 +2,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:ck_dashboard/core/logger.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
+import 'package:ck_dashboard/core/variable.dart';
 
 class WebSocketService {
   final Duration reconnectDelay;
@@ -14,8 +14,7 @@ class WebSocketService {
   final _inController = StreamController<Map<String, dynamic>>.broadcast();
   bool _closed = false;
   final Uri uri = Uri.parse(
-    dotenv.env['WEBSOCKET_URL'] ??
-        'wss://demo.mylaos.life/api/calculation/realtime',
+    WEBSOCKET_URL ?? 'wss://demo.mylaos.life/api/calculation/realtime',
   );
 
   WebSocketService({this.reconnectDelay = const Duration(seconds: 2)}) {

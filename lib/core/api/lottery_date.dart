@@ -4,11 +4,11 @@ import 'package:ck_dashboard/core/util.dart';
 import 'package:ck_dashboard/models/appwrite_model.dart';
 import 'package:ck_dashboard/models/digit_summary.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:ck_dashboard/core/variable.dart';
 
 Future getNextLotteryDate() async {
   final api = ApiService();
-  final jwt = generateJwt({'iss': dotenv.env['JWT_ISSUER']});
+  final jwt = generateJwt({'iss': JWT_ISSUER});
 
   final resp = await api.get(
     '/api/lotteryDate',
@@ -31,7 +31,7 @@ Future getDigitSummary({
   required String lotteryDateId,
 }) async {
   final api = ApiService();
-  final jwt = generateJwt({'iss': dotenv.env['JWT_ISSUER']});
+  final jwt = generateJwt({'iss': JWT_ISSUER});
 
   final resp = await api.post(
     '/api/dashboard',

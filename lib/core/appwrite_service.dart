@@ -1,14 +1,12 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:ck_dashboard/core/variable.dart';
 
 class AppwriteService {
   // 1. กำหนด client
   final Client client = Client()
-      .setEndpoint(
-        dotenv.env['APPWRITE_ENDPOINT']!,
-      ) // เช่น https://cloud.appwrite.io/v1
-      .setProject(dotenv.env['APPWRITE_PROJECT']!);
-
+      .setEndpoint(APPWRITE_ENDPOINT) // เช่น https://cloud.appwrite.io/v1
+      .setProject(APPWRITE_PROJECT);
+  // dotenv.env['APPWRITE_ENDPOINT']!,
   late final Account account;
   late final Databases database;
   AppwriteService() {

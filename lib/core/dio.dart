@@ -1,10 +1,10 @@
+import 'package:ck_dashboard/core/variable.dart';
 import 'package:dio/dio.dart';
 import "./logger.dart";
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiService {
   final Dio _dio;
-  static final String baseUrl = dotenv.env['NEXT_SERVER']!;
+  static final String baseUrl = NEXT_SERVER;
 
   ApiService() : _dio = Dio(BaseOptions(baseUrl: baseUrl)) {
     _dio.interceptors.add(

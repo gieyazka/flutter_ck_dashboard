@@ -1,3 +1,4 @@
+import 'package:ck_dashboard/core/variable.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +9,7 @@ String generateJwt(Map<String, dynamic> payload) {
 
   // Sign the JWT with the secret
   final token = jwt.sign(
-    SecretKey(dotenv.env['JWT_SECRET']!),
+    SecretKey(JWT_SECRET),
     algorithm: JWTAlgorithm.HS384,
   );
 

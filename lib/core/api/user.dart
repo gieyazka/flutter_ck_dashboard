@@ -1,9 +1,9 @@
 import "package:appwrite/appwrite.dart";
 import "package:appwrite/models.dart";
 import "package:ck_dashboard/core/appwrite_service.dart";
+import "package:ck_dashboard/core/variable.dart";
 import "package:ck_dashboard/models/appwrite_model.dart";
 import "package:dio/dio.dart";
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import "../logger.dart";
 import "../dio.dart";
 import "../util.dart";
@@ -22,28 +22,24 @@ class LoginResponse {
   );
 }
 
-
-  class AccountResponse {
+class AccountResponse {
   final bool success;
   final User? user;
   final String? message;
 
   AccountResponse({required this.success, this.user, this.message});
 
-  factory AccountResponse.fromJson(Map<String, dynamic> json) => AccountResponse(
-    success: json['success'] as bool,
-    user: json['user'] != null ? User.fromMap(json['user']) : null,
-    message: json['message'] as String?,
-  );
+  factory AccountResponse.fromJson(Map<String, dynamic> json) =>
+      AccountResponse(
+        success: json['success'] as bool,
+        user: json['user'] != null ? User.fromMap(json['user']) : null,
+        message: json['message'] as String?,
+      );
 }
-
 
 Future getUserByUsername({required String username}) async {
   final api = ApiService();
-  final jwt = generateJwt({
-    'username': username,
-    'iss': dotenv.env['JWT_ISSUER'],
-  });
+  final jwt = generateJwt({'username': username, 'iss': JWT_ISSUER});
 
   final resp = await api.post(
     '/api/user/get-username',
@@ -81,6 +77,7 @@ Future<LoginResponse> createSession({
     throw Exception('Login failed: ${e.message}');
   }
 }
+
 Future<AccountResponse> getSession() async {
   try {
     final appwrite = await AppwriteService();
@@ -105,8 +102,6 @@ Future<AccountResponse> getSession() async {
   }
 }
 
-
-
 Future deleteSession() async {
   final service = AppwriteService();
   try {
@@ -116,6 +111,7 @@ Future deleteSession() async {
     return {'success': false, 'message': e.toString()};
   }
 }
+
 Future<bool> isUserLoggedIn() async {
   final service = AppwriteService();
   try {

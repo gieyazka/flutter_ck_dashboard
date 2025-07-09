@@ -21,11 +21,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // โหลดแบบชี้ path เต็มไปเลย
-  try {
-    await dotenv.load();
-  } catch (e) {
-    logger.e('.env failed to load  $e');
-  }
+  // try {
+  //   await dotenv.load();
+  // } catch (e) {
+  //   logger.e('.env failed to load  $e');
+  // }
 
   try {
     await deleteSession();
