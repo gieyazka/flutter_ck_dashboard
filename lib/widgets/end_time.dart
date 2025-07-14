@@ -21,48 +21,61 @@ class EndTimeClock extends ConsumerWidget {
         return IntrinsicWidth(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // แสดงเวลา
-                ref
-                    .watch(countdownProvider)
-                    .when(
-                      data: (duration) {
-                        if (duration == null) {
-                          return Text('No duration');
-                        }
-                        final days = duration.inDays;
-                        // รอเวลาเหลือหลังหักวันเต็มออก
-                        final hours = duration.inHours
-                            .remainder(24)
-                            .toString()
-                            .padLeft(2, '0');
-                        final minutes = duration.inMinutes
-                            .remainder(60)
-                            .toString()
-                            .padLeft(2, '0');
-                        final seconds = duration.inSeconds
-                            .remainder(60)
-                            .toString()
-                            .padLeft(2, '0');
+                Image.asset(
+                  'assets/hourglass_color.png',
+                  width: 44,
+                  height: 44,
 
-                        String text;
-                        if (days > 0) {
-                          final dayLabel = days > 1 ? 'days' : 'day';
-                          text = '$days $dayLabel $hours:$minutes:$seconds';
-                        } else {
-                          text = '$hours : $minutes : $seconds';
-                        }
-
-                        return Text(
-                          text,
-                          style: TextStyle(fontSize: 32, color: Colors.white),
-                        );
-                      },
-                      loading: () => Text('Loading...'),
-                      error: (e, _) => Text('Error'),
-                    ),
+                ),
+                SizedBox(width: 8),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // แสดงเวลา
+                    ref
+                        .watch(countdownProvider)
+                        .when(
+                          data: (duration) {
+                            if (duration == null) {
+                              return Text('No duration');
+                            }
+                            final days = duration.inDays;
+                            // รอเวลาเหลือหลังหักวันเต็มออก
+                            final hours = duration.inHours
+                                .remainder(24)
+                                .toString()
+                                .padLeft(2, '0');
+                            final minutes = duration.inMinutes
+                                .remainder(60)
+                                .toString()
+                                .padLeft(2, '0');
+                            final seconds = duration.inSeconds
+                                .remainder(60)
+                                .toString()
+                                .padLeft(2, '0');
+                
+                            String text;
+                            if (days > 0) {
+                              final dayLabel = days > 1 ? 'days' : 'day';
+                              text = '$days $dayLabel $hours:$minutes:$seconds';
+                            } else {
+                              text = '$hours : $minutes : $seconds';
+                            }
+                
+                            return Text(
+                              text,
+                              style: TextStyle(fontSize: 32, color: Colors.white),
+                            );
+                          },
+                          loading: () => Text('Loading...'),
+                          error: (e, _) => Text('Error'),
+                        ),
+                  ],
+                ),
               ],
             ),
           ),

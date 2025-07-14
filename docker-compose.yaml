@@ -1,0 +1,21 @@
+services:
+  ck-dashboard-app:
+    image: pokkate/ck-dashboard:latest
+    container_name: ck-dashboard-app
+    restart: always
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.flutter_dashboard.rule=PathPrefix(`/flutter_dashboard`)"
+    #   - "traefik.http.routers.flutter_dashboard.entrypoints=web"
+    #   - "traefik.http.services.flutter_dashboard.loadbalancer.server.port=80"
+    #   - "traefik.http.middlewares.flutter_dashboard.replacepathregex.regex=^/flutter_dashboard/(.*)"
+    #   - "traefik.http.middlewares.flutter_dashboard.replacepathregex.replacement=/$$1"
+    #   - "traefik.http.routers.flutter_dashboard.middlewares=flutter_dashboard"
+    networks:
+      - ck_backend
+    ports:
+      - "1800:80"
+networks:
+  ck_backend:
+    driver: bridge
+      

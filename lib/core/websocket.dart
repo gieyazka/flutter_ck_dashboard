@@ -5,6 +5,7 @@ import 'package:ck_dashboard/core/logger.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:ck_dashboard/core/variable.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 class WebSocketService {
   final Duration reconnectDelay;
@@ -20,8 +21,11 @@ class WebSocketService {
   WebSocketService({this.reconnectDelay = const Duration(seconds: 2)}) {
     _connectLoop();
   }
+  Stream<Map<String, dynamic>> get stream => _inController.stream
+      .debounce(const Duration(milliseconds: 200))
+      // ถ้าต้องการให้เป็น broadcast อีกครั้ง (หากมีหลาย listener)
+      .asBroadcastStream();
 
-  Stream<Map<String, dynamic>> get stream => _inController.stream;
 
   void send(Map<String, dynamic> msg, bool keep) {
     if (_closed) return;

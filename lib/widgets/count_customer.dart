@@ -25,7 +25,7 @@ class CustomerCountCard extends ConsumerWidget {
                   const SizedBox(height: 8), // เว้นระยะห่างด้านบน
 
                   Text(
-                    'จำนวนลูกค้าที่ซื้อ',
+                    'ຈໍານວນລູກຄ້າທີ່ຊື້',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xFFFD8B0B),

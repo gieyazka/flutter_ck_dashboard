@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:ck_dashboard/core/logger.dart';
+import 'package:ck_dashboard/models/SummaryDashboard_model.dart';
 import 'package:ck_dashboard/models/digit_summary.dart';
 import 'package:ck_dashboard/providers/digit_summary_provider.dart';
 import 'package:ck_dashboard/providers/lottery_date_provider.dart';
@@ -8,21 +9,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class TopAccumulate extends ConsumerWidget {
+class AllQuota extends ConsumerWidget {
   final String title;
-  final List<Accumulate> accumulate;
-  const TopAccumulate({Key? key, required this.title, required this.accumulate})
-    : super(key: key);
+  final List<SummaryData> dashboardSummary;
+  const AllQuota({
+    Key? key,
+    required this.title,
+    required this.dashboardSummary,
+  }) : super(key: key);
   String _fmt(int n) => NumberFormat.decimalPattern().format(n);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // watch ค่าจำนวนลูกค้า
-    final dashboardSummary = ref.watch(DigitSummaryProvider);
-    final digit = dashboardSummary.digit;
-    final divisor = pow(10, digit ?? 0);
-    final target =
-        ((dashboardSummary.digitSummary?.digitQuota.amount ?? 0) / divisor)
-            .toInt();
+
+
     return Card(
       clipBehavior: Clip.antiAlias,
       color: Colors.grey[850],
@@ -56,13 +55,13 @@ class TopAccumulate extends ConsumerWidget {
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.all(16),
-                itemCount: accumulate.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                itemCount: this.dashboardSummary.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 20),
                 itemBuilder: (context, i) {
-                  final item = accumulate[i];
+                  final item = this.dashboardSummary[i];
 
-                  final ratio = item.amount > 0
-                      ? (item.amount / target).clamp(0.0, 1.0)
+                  final ratio = item.quota > 0
+                      ? (item.quota / item.maxQuota).clamp(0.0, 1.0)
                       : 0.0;
                   Color barColor;
                   if (ratio > 0.8) {
@@ -91,10 +90,10 @@ class TopAccumulate extends ConsumerWidget {
                           softWrap: false,
                           maxLines: 1,
                           textAlign: TextAlign.center,
-                          item.lottery.toString(),
+                          item.type.toString(),
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 24,
+                            fontSize: 40,
                           ),
                         ),
                       ),
@@ -115,7 +114,7 @@ class TopAccumulate extends ConsumerWidget {
                                   children: [
                                     Container(
                                       width: fullW,
-                                      height: 47.4,
+                                      height: 100,
                                       decoration: BoxDecoration(
                                         color: Colors.white24,
                                         borderRadius: BorderRadius.circular(4),
@@ -126,7 +125,7 @@ class TopAccumulate extends ConsumerWidget {
                                         milliseconds: 300,
                                       ),
                                       width: fullW * ratio,
-                                      height: 47.4,
+                                      height: 100,
                                       decoration: BoxDecoration(
                                         color: barColor,
                                         borderRadius: BorderRadius.circular(4),
@@ -136,10 +135,10 @@ class TopAccumulate extends ConsumerWidget {
                                     Positioned.fill(
                                       child: Center(
                                         child: Text(
-                                          '${_fmt(item.amount)} / ${_fmt(target)}',
+                                          '${_fmt(item.quota.toInt())} / ${_fmt(item.maxQuota.toInt())}',
                                           style: TextStyle(
                                             color: fontColor,
-                                            fontSize: 30,
+                                            fontSize: 50,
                                             fontWeight: FontWeight.w800,
                                           ),
                                         ),

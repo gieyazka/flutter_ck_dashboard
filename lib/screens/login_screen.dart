@@ -151,7 +151,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           decoration: InputDecoration(
                             labelText: 'Username',
                             hintText: 'input your username',
-                            
+
                             prefixIcon: const Icon(Icons.email_outlined),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),

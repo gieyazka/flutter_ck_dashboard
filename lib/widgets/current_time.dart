@@ -21,31 +21,42 @@ class DigitalClock extends ConsumerWidget {
         return IntrinsicWidth(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // แสดงเวลา
-                Text(
-                  timeString,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 44,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Image.asset(
+                  'assets/clock_color.png',
+                  width: 44,
+                  height: 44,
                 ),
-                const SizedBox(height: 4),
-                // แสดงวันที่
-                Text(
-                  dateString,
-                  style: TextStyle(color: Colors.white70, fontSize: 20),
+                SizedBox(width: 16),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // แสดงเวลา
+                    Text(
+                      timeString,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 44,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    // แสดงวันที่
+                    Text(
+                      dateString,
+                      style: TextStyle(color: Colors.white70, fontSize: 24),
+                    ),
+                    // SizedBox(height: 6),
+                    // เส้นสีน้ำเงินด้านล่าง
+                    // Container(
+                    //   height: 2,
+                    //   width: double.infinity,
+                    //   color: Colors.blueAccent,
+                    // ),
+                  ],
                 ),
-                SizedBox(height: 6),
-                // เส้นสีน้ำเงินด้านล่าง
-                // Container(
-                //   height: 2,
-                //   width: double.infinity,
-                //   color: Colors.blueAccent,
-                // ),
               ],
             ),
           ),

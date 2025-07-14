@@ -25,7 +25,7 @@ class SummaryDigitScreen extends ConsumerWidget {
     final digitProvider = ref.watch(DigitSummaryProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0x1C1C1C),
+      backgroundColor: const Color(0xFF1C1C1C),
       body: SafeArea(
         child: Column(
           children: [
@@ -118,7 +118,7 @@ class SummaryDigitScreen extends ConsumerWidget {
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: 3,
-                    mainAxisCellCount: 2.55,
+                    mainAxisCellCount: 2.65,
                     child: FullQuota(
                       title: 'ตัวเลขที่เต็มโควต้า',
                       accumulate: digitProvider.digitSummary?.fullQuota ?? [],
@@ -126,7 +126,7 @@ class SummaryDigitScreen extends ConsumerWidget {
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: 4,
-                    mainAxisCellCount: 3.8, //height ratio
+                    mainAxisCellCount: 4, //height ratio
                     child: TopAccumulate(
                       title: '10 ตัวที่ขายมากที่สุด',
                       accumulate:
@@ -135,7 +135,7 @@ class SummaryDigitScreen extends ConsumerWidget {
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: 4,
-                    mainAxisCellCount: 3.8, //height ratio
+                    mainAxisCellCount: 4, //height ratio
                     child: TopAccumulate(
                       title: '10 ตัวที่ขายน้อยที่สุด',
                       accumulate:
@@ -144,7 +144,7 @@ class SummaryDigitScreen extends ConsumerWidget {
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: 3,
-                    mainAxisCellCount: 2.55,
+                    mainAxisCellCount: 2.65,
                     child: FullQuota(
                       title: 'ตัวเลขที่ไม่ขาย',
                       accumulate:

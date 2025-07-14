@@ -54,7 +54,7 @@ class FullQuota extends ConsumerWidget {
                       padding: EdgeInsets.all(8),
                       child: Text(
                         n.lottery.toString(),
-                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
                       ),
                       // padding: EdgeInsets.zero,
                       decoration: BoxDecoration(
