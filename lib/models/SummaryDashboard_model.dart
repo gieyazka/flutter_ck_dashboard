@@ -5,9 +5,9 @@ class SummaryDashboard {
   SummaryDashboard({required this.sumRevenue, required this.dashboardSummary});
   factory SummaryDashboard.fromJson(Map<String, dynamic> json) {
     final summaryList = (json['dashboardSummary'] as List<dynamic>)
+        .where((e) => e is Map<String, dynamic>) // ✅ กรองเฉพาะที่เป็น Map
         .map((e) => SummaryData.fromJson(e as Map<String, dynamic>))
         .toList();
-
     return SummaryDashboard(
       sumRevenue: (json['sumRevenue'] as num).toInt(),
       dashboardSummary: summaryList,
@@ -52,19 +52,22 @@ class SummaryData {
     required this.maxQuota,
   });
   factory SummaryData.fromJson(Map<String, dynamic> json) {
+    print("Parsing SummaryData from JSON: ${json}");
     return SummaryData(
-      lotteryDateId: json["lottery_date_id"],
-      bankTransactionCost: (json['bank_transaction_cost'] as num).toDouble(),
-      revenue: (json["revenue"] as num).toDouble(),
-      type: json["type"],
-      bankWinCost: (json["bank_win_cost"] as num).toDouble(),
-      lotteryTransactionCost: (json["lottery_transaction_cost"] as num).toDouble(),
-      specialReward: (json["special_reward"] as num).toDouble(),
-      promotionCost: (json["promotion_cost"] as num).toDouble(),
-      pointCost: (json["point_cost"] as num).toDouble(),
-      quota: (json["quota"] as num).toDouble(),
-      id: json[r'$id'] as String,
-      maxQuota: (json["maxQuota"] as num).toDouble(),
+      lotteryDateId: json["lottery_date_id"]?.toString() ?? '',
+      bankTransactionCost:
+          (json['bank_transaction_cost'] as num?)?.toDouble() ?? 0.0,
+      revenue: (json["revenue"] as num?)?.toDouble() ?? 0.0,
+      type: json["type"] ?? 0,
+      bankWinCost: (json["bank_win_cost"] as num?)?.toDouble() ?? 0.0,
+      lotteryTransactionCost:
+          (json["lottery_transaction_cost"] as num?)?.toDouble() ?? 0.0,
+      specialReward: (json["special_reward"] as num?)?.toDouble() ?? 0.0,
+      promotionCost: (json["promotion_cost"] as num?)?.toDouble() ?? 0.0,
+      pointCost: (json["point_cost"] as num?)?.toDouble() ?? 0.0,
+      quota: (json["quota"] as num?)?.toDouble() ?? 0.0,
+      id: json[r'$id']?.toString() ?? '',
+      maxQuota: (json["maxQuota"] as num?)?.toDouble() ?? 0.0,
     );
   }
   Map<String, dynamic> toJson() {

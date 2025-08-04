@@ -10,13 +10,27 @@ import 'package:intl/intl.dart';
 /// จำนวนเป้าหมาย
 
 class DigitQuota extends ConsumerWidget {
+  final int digit;
+  const DigitQuota({Key? key, required this.digit}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // watch ค่าจำนวนลูกค้า
     final lotteryDate = ref.watch(lotteryDateProvider);
-    final dashboardSummary = ref.watch(DigitSummaryProvider);
-    final digit = dashboardSummary.digit;
-    final current = dashboardSummary.digitSummary?.dashboardSummary.quota ?? 0;
+    final dashboardSummary = ref.watch(DigitSummaryProvider(digit));
+
+    // final current = dashboardSummary.digitSummary?.dashboardSummary.quota ?? 0;
+    final int current = digit == 2
+        ? (dashboardSummary.digitSummary?.dashboardSummary.quotaTwo ?? 0)
+        : digit == 3
+        ? (dashboardSummary.digitSummary?.dashboardSummary.quotaThree ?? 0)
+        : digit == 4
+        ? (dashboardSummary.digitSummary?.dashboardSummary.quotaFour ?? 0)
+        : digit == 5
+        ? (dashboardSummary.digitSummary?.dashboardSummary.quotaFive ?? 0)
+        : digit == 6
+        ? (dashboardSummary.digitSummary?.dashboardSummary.quotaSix ?? 0)
+        : 0;
+
     final divisor = pow(10, digit ?? 0);
     // final target =
     //     ((dashboardSummary.digitSummary?.digitQuota.amount ?? 0) / divisor)
@@ -32,7 +46,7 @@ class DigitQuota extends ConsumerWidget {
 
     Color barColor;
     if (ratio > 0.8) {
-      barColor = Colors.teal;
+      barColor = Colors.green;
     } else if (ratio > 0.5) {
       barColor = Colors.yellow;
     } else {
@@ -43,7 +57,7 @@ class DigitQuota extends ConsumerWidget {
       clipBehavior: Clip.antiAlias,
       color: Colors.grey[850],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.fromLTRB(8, 8, 8, 8),
       child: Container(
         // padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
         child: Column(
@@ -56,7 +70,7 @@ class DigitQuota extends ConsumerWidget {
                   const SizedBox(height: 8), // เว้นระยะห่างด้านบน
 
                   Text(
-                    'จำนวนโควต้า เลข ${digit ?? 0} หลัก',
+                    'ຈຳນວນໂຄວຕ້າ ເລກ ${digit ?? 0} ໂຕ',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xFFFD8B0B),

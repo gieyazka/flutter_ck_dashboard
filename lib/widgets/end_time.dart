@@ -60,7 +60,7 @@ class EndTimeClock extends ConsumerWidget {
                 
                             String text;
                             if (days > 0) {
-                              final dayLabel = days > 1 ? 'days' : 'day';
+                              final dayLabel = days > 1 ? 'ມື້' : 'ມື້';
                               text = '$days $dayLabel $hours:$minutes:$seconds';
                             } else {
                               text = '$hours : $minutes : $seconds';

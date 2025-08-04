@@ -12,7 +12,7 @@ class CustomerCountCard extends ConsumerWidget {
       clipBehavior: Clip.antiAlias,
       color: Colors.grey[850],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.fromLTRB(16,16,4,8),
       child: Container(
         // padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
         child: Column(

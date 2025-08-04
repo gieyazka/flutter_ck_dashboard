@@ -12,13 +12,12 @@ class FullQuota extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // watch ค่าจำนวนลูกค้า
 
     return Card(
       clipBehavior: Clip.antiAlias,
       color: Colors.grey[850],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(8),
       child: Container(
         // padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
         child: Column(
@@ -43,28 +42,33 @@ class FullQuota extends ConsumerWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                children: [
-                  for (final n in accumulate)
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      child: Text(
-                        n.lottery.toString(),
-                        style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
-                      ),
-                      // padding: EdgeInsets.zero,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF292D36),
-                        border: Border.all(color: Colors.red, width: 2),
-                        // shape: BoxShape.circle,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: SingleChildScrollView(
+                  child: Wrap(
+                    spacing: 12,
+                    runSpacing: 12,
+                    children: [
+                      
+                      for (final n in accumulate)
+                        Container(
+                          padding: EdgeInsets.all(8),
+                          child: Text(
+                            n.lottery.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                          ),
+                          // padding: EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                            color: Color(0xFF292D36),
+                            border: Border.all(color: Colors.red, width: 2),
+                            // shape: BoxShape.circle,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],

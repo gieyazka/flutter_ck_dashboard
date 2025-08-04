@@ -58,18 +58,21 @@ Future getMainDashboard({required String lotteryDateId}) async {
 
   final resp = await api.post(
     '/api/dashboard/mainDashboard',
-    data: {'lotteryDateId': "686c927b0028825bbee4"},
-    // data: {'lotteryDateId': lotteryDateId},
+    // data: {'lotteryDateId': "686c927b0028825bbee4"},
+    data: {'lotteryDateId': lotteryDateId},
     options: Options(headers: {'Authorization': 'Bearer $jwt'}),
   );
   if (resp.statusCode != 200) {
     throw Exception('Failed to fetch user: ${resp.data['message']}');
   }
-  // logger.i('get digit summary fetched successfully ${resp.data}');
+  logger.i('get digit summary fetched successfully ${resp.data}');
 
   final data = resp.data as Map<String, dynamic>;
   if (data.isEmpty) {
     throw Exception('User not found');
   }
+
+
+
   return SummaryDashboard.fromJson(data);
 }

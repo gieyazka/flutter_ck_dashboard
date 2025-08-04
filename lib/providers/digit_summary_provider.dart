@@ -40,23 +40,60 @@ class digitSummaryState {
 
 class digitSummaryNotifier extends StateNotifier<digitSummaryState> {
   late final Ref _ref;
-  digitSummaryNotifier(ref) : super(digitSummaryState()) {
+  final int digit;
+  digitSummaryNotifier(ref, this.digit) : super(digitSummaryState()) {
     _ref = ref;
+
+    _waitForLotteryDate();
   }
 
-  void setDigit(int newDigit) async {
-    state = state.copyWith(digit: newDigit, isLoading: true, error: null);
-    final lotteryDate = _ref.read(lotteryDateProvider).lotteryDate;
-    final data = await getDigitSummary(
-      date: formatYMD(lotteryDate!.dateTime),
-      type: state.digit!,
-      lotteryDateId: lotteryDate!.id,
-    );
-    state = state.copyWith(isLoading: false, error: null, digitSummary: data);
-    // TODO: Connect Sockets
-    final wsService = _ref.read(wsServiceProvider);
-    wsService.send({'room': 'digit_$newDigit'}, true);
+  void _waitForLotteryDate() {
+    // ฟัง provider จนกว่าจะได้ lotteryDate
+    _ref.listen<lotteryDateState>(lotteryDateProvider, (prev, next) {
+      if (next.lotteryDate != null && state.digitSummary == null) {
+        _initWebsocket(next.lotteryDate!);
+      }
+    });
   }
+
+  void _initWebsocket(LotteryDateAppwrite lotteryDate) async {
+    // ถ้าต้องการฟังข้อมูลกลับมา:
+    final data = await getDigitSummary(
+      date: formatYMD(lotteryDate.dateTime),
+      type: digit,
+      lotteryDateId: lotteryDate.id,
+    );
+    state = state.copyWith(
+      digit: digit,
+      isLoading: false,
+      error: null,
+      digitSummary: data,
+    );
+    final ws = _ref.read(wsServiceProvider);
+    ws.send({'room': 'digit_$digit'}, true);
+    ws.stream.listen((msg) {
+      // parse msg แล้ว update state ผ่าน state = ...
+    });
+  }
+
+  // void setDigit(int newDigit) async {
+  //   final oldRoom = state.digit;
+  //   // TODO: Connect Sockets
+  //   final wsService = _ref.read(wsServiceProvider);
+  //   // TODO:leave old room
+  //   wsService.send({'room': 'digit_$newDigit', "type": "leave"}, false);
+
+  //   wsService.send({'room': 'digit_$newDigit'}, true);
+
+  //   state = state.copyWith(digit: newDigit, isLoading: true, error: null);
+  //   final lotteryDate = _ref.read(lotteryDateProvider).lotteryDate;
+  //   final data = await getDigitSummary(
+  //     date: formatYMD(lotteryDate!.dateTime),
+  //     type: state.digit!,
+  //     lotteryDateId: lotteryDate!.id,
+  //   );
+  //   state = state.copyWith(isLoading: false, error: null, digitSummary: data);
+  // }
 
   void handleSocketData(Map<String, dynamic> data) {
     final oldQuota = state.digitSummary?.digitQuota;
@@ -93,6 +130,13 @@ class digitSummaryNotifier extends StateNotifier<digitSummaryState> {
                 lotteryTsCost: 0,
                 pointCost: 0,
                 quota: 0,
+                dashboardType: '',
+                quotaOne: 0,
+                quotaTwo: 0,
+                quotaThree: 0,
+                quotaFour: 0,
+                quotaFive: 0,
+                quotaSix: 0,
               ),
       ),
     );
@@ -103,8 +147,11 @@ class digitSummaryNotifier extends StateNotifier<digitSummaryState> {
 
 /// 3) ประกาศ provider
 final DigitSummaryProvider =
-    StateNotifierProvider<digitSummaryNotifier, digitSummaryState>((ref) {
+    StateNotifierProvider.family<digitSummaryNotifier, digitSummaryState, int>((
+      ref,
+      digit,
+    ) {
       // สร้าง notifier
-      final notifier = digitSummaryNotifier(ref);
+      final notifier = digitSummaryNotifier(ref, digit);
       return notifier;
     });

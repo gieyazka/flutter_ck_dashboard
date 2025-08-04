@@ -8,23 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class TopAccumulate extends ConsumerWidget {
+class BottomAccumulate extends ConsumerWidget {
   final String title;
   final int digit;
-
   final List<Accumulate> accumulate;
-  const TopAccumulate({
-    Key? key,
-    required this.title,
-    required this.accumulate,
-    required this.digit,
-  }) : super(key: key);
+  const BottomAccumulate({Key? key, required this.title, required this.accumulate,required this.digit})
+    : super(key: key);
   String _fmt(int n) => NumberFormat.decimalPattern().format(n);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // watch ค่าจำนวนลูกค้า
     final dashboardSummary = ref.watch(DigitSummaryProvider(digit));
-    final divisor = pow(10, digit ?? 0);
+    final divisor = pow(10, digit);
     final target =
         ((dashboardSummary.digitSummary?.digitQuota.amount ?? 0) / divisor)
             .toInt();
@@ -32,7 +27,7 @@ class TopAccumulate extends ConsumerWidget {
       clipBehavior: Clip.antiAlias,
       color: Colors.grey[850],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      margin: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+      margin: const EdgeInsets.fromLTRB(8, 8, 8, 8),
       child: Container(
         // padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
         child: Column(

@@ -7,14 +7,16 @@ class ApiService {
   static final String baseUrl = NEXT_SERVER;
 
   ApiService() : _dio = Dio(BaseOptions(baseUrl: baseUrl)) {
+    print("baseUrl $baseUrl");
+
     _dio.interceptors.add(
       InterceptorsWrapper(
-        // onRequest: (options, handler) {
-        //   logger.i('→ REQUEST [${options.method}] ${options.uri}');
-        //   logger.t('Headers: ${options.headers}');
-        //   logger.t('Body   : ${options.data}');
-        //   handler.next(options);
-        // },
+        onRequest: (options, handler) {
+          logger.i('→ REQUEST [${options.method}] ${options.uri}');
+          logger.t('Headers: ${options.headers}');
+          logger.t('Body   : ${options.data}');
+          handler.next(options);
+        },
         onResponse: (response, handler) {
           logger.i(
             '← RESPONSE [${response.statusCode}] ${response.requestOptions.uri}',
@@ -26,9 +28,9 @@ class ApiService {
           logger.e(
             '✕ ERROR [${error.response?.statusCode}] ${error.requestOptions.uri}',
           );
-          logger.e('Error   : ${error.error}');
+          print('Error   : ${error.error}');
           if (error.response?.data != null) {
-            logger.d('Payload : ${error.response!.data}');
+            print('Payload : ${error.response!.data}');
           }
           handler.next(error);
         },

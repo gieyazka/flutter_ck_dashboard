@@ -4,8 +4,8 @@ import 'package:ck_dashboard/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-
+import 'package:path/path.dart' as p;
+import 'dart:io';
 
 // Menu item model
 class MenuItem {
@@ -35,10 +35,39 @@ final menuItemsProvider = Provider<List<MenuItem>>(
       color: Colors.blue,
     ),
     MenuItem(
-      title: 'Digit Summary',
-      subtitle: 'Digit summary of your data',
-      icon: Icons.shopping_cart,
-      route: '/digit',
+      title: '2 Digit',
+      subtitle: '2 Digit summary  ',
+      icon: Icons.looks_two_rounded,
+      route: '/digit_2',
+      color: Colors.green,
+    ),
+
+    MenuItem(
+      title: '3 Digit',
+      subtitle: ' 3 Digit summary',
+      icon: Icons.looks_3_rounded,
+      route: '/digit_3',
+      color: Colors.green,
+    ),
+    MenuItem(
+      title: '4 Digit ',
+      subtitle: '4 Digit summary',
+      icon: Icons.looks_4_rounded,
+      route: '/digit_4',
+      color: Colors.green,
+    ),
+    MenuItem(
+      title: '5 Digit',
+      subtitle: '5 Digit summary',
+      icon: Icons.looks_5_rounded,
+      route: '/digit_5',
+      color: Colors.green,
+    ),
+    MenuItem(
+      title: '6 Digit',
+      subtitle: '6 Digit summary',
+      icon: Icons.looks_6_rounded,
+      route: '/digit_6',
       color: Colors.green,
     ),
   ],
@@ -56,28 +85,7 @@ class HomePage extends ConsumerWidget {
     final userData = auth.user?.name ?? 'User Name';
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      // appBar: AppBar(
-      //   title: const Text(
-      //     'หน้าหลัก',
-      //     style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-      //   ),
-      //   backgroundColor: Colors.blue[600],
-      //   elevation: 0,
-      //   actions: [
-      //     IconButton(
-      //       icon: const Icon(Icons.search, color: Colors.white),
-      //       onPressed: () {
-      //         // Search functionality
-      //       },
-      //     ),
-      //     IconButton(
-      //       icon: const Icon(Icons.more_vert, color: Colors.white),
-      //       onPressed: () {
-      //         // More options
-      //       },
-      //     ),
-      //   ],
-      // ),
+
       body: Column(
         children: [
           // 1) Header
@@ -119,7 +127,7 @@ class HomePage extends ConsumerWidget {
             ),
           ),
 
-          const SizedBox(height: 15),
+          const SizedBox(height: 8),
 
           // 3) GridView ขยายเต็มพื้นที่แนวตั้งที่เหลือ
           Expanded(
@@ -127,10 +135,9 @@ class HomePage extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
-                  childAspectRatio: 1.2,
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
                 ),
                 itemCount: menuItems.length,
                 itemBuilder: (context, index) {
@@ -197,7 +204,8 @@ class HomePage extends ConsumerWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: InkWell(
         onTap: () {
-          context.go(item.route);
+          context.push(item.route);
+          // logger.i('Opening new app window for route: ${item.route}');
         },
         borderRadius: BorderRadius.circular(15),
         child: Container(

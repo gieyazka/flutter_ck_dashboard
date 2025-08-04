@@ -16,7 +16,6 @@ class TotalBuy extends ConsumerWidget {
     // watch ค่าจำนวนลูกค้า
     final lotteryDate = ref.watch(lotteryDateProvider);
     final dashboardSummary = ref.watch(SummaryProvider);
-    final digit = dashboardSummary.digit;
     final current = dashboardSummary.summaryDashboard?.sumRevenue ?? 0;
 
     final target = dashboardSummary.summaryDashboard?.dashboardSummary
@@ -31,7 +30,7 @@ class TotalBuy extends ConsumerWidget {
 
     Color barColor;
     if (ratio > 0.8) {
-      barColor = Colors.teal;
+      barColor = Colors.green;
     } else if (ratio > 0.5) {
       barColor = Colors.yellow;
     } else {
@@ -42,7 +41,9 @@ class TotalBuy extends ConsumerWidget {
       clipBehavior: Clip.antiAlias,
       color: Colors.grey[850],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      margin: const EdgeInsets.all(16),
+            margin: const EdgeInsets.fromLTRB(16,16,4,8),
+
+      
       child: Container(
         // padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
         child: Column(
@@ -82,7 +83,7 @@ class TotalBuy extends ConsumerWidget {
                           // background
                           Container(
                             width: fullWidth,
-                            height: 44,
+                            height: 60,
                             decoration: BoxDecoration(
                               color: Colors.white24,
                               // borderRadius: BorderRadius.circular(12),
@@ -92,7 +93,7 @@ class TotalBuy extends ConsumerWidget {
                           AnimatedContainer(
                             duration: const Duration(milliseconds: 500),
                             width: fillWidth,
-                            height: 44,
+                            height: 60,
                             decoration: BoxDecoration(
                               color: barColor,
                               // borderRadius: BorderRadius.circular(12),

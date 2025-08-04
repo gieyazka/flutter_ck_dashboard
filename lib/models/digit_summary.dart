@@ -13,7 +13,7 @@ class DigitSummary {
     required this.notBuyAccumulate,
     required this.fullQuota,
     required this.dashboardSummary,
-  }); 
+  });
 
   factory DigitSummary.fromJson(Map<String, dynamic> json) {
     return DigitSummary(
@@ -41,6 +41,13 @@ class DigitSummary {
               lotteryTsCost: 0,
               pointCost: 0,
               quota: 0,
+              dashboardType: '',
+              quotaOne: 0,
+              quotaTwo: 0,
+              quotaThree: 0,
+              quotaFour: 0,
+              quotaFive: 0,
+              quotaSix: 0,
             ),
     );
   }
@@ -125,11 +132,18 @@ class DashboardSummary {
   final String id; // corresponds to $id
   final String lotteryDateId;
   final int revenue;
-  final int type;
+  final int? type;
   final int bankWinCost;
   final int lotteryTsCost;
   final int pointCost;
   final int quota;
+  final String dashboardType;
+  final int quotaOne;
+  final int quotaTwo;
+  final int quotaThree;
+  final int quotaFour;
+  final int quotaFive;
+  final int quotaSix;
 
   const DashboardSummary({
     required this.id,
@@ -140,6 +154,13 @@ class DashboardSummary {
     required this.lotteryTsCost,
     required this.pointCost,
     required this.quota,
+    this.dashboardType = '',
+    required this.quotaOne,
+    required this.quotaTwo,
+    required this.quotaThree,
+    required this.quotaFour,
+    required this.quotaFive,
+    required this.quotaSix,
   });
 
   factory DashboardSummary.fromJson(Map<String, dynamic> json) {
@@ -147,11 +168,18 @@ class DashboardSummary {
       id: json[r'$id'] as String,
       lotteryDateId: json['lottery_date_id'] as String,
       revenue: (json['revenue'] as num).toInt(),
-      type: (json['type'] as num).toInt(),
+      type: json['type'] != null ? (json['type'] as num?)?.toInt() : null,
       bankWinCost: (json['bank_win_cost'] as num).toInt(),
       lotteryTsCost: (json['lottery_transaction_cost'] as num).toInt(),
       pointCost: (json['point_cost'] as num).toInt(),
       quota: (json['quota'] as num).toInt(),
+      dashboardType: json['dashboard_type'] as String? ?? '',
+      quotaOne: (json['quota_one'] as num).toInt(),
+      quotaTwo: (json['quota_two'] as num).toInt(),
+      quotaThree: (json['quota_three'] as num).toInt(),
+      quotaFour: (json['quota_four'] as num).toInt(),
+      quotaFive: (json['quota_five'] as num).toInt(),
+      quotaSix: (json['quota_six'] as num).toInt(),
     );
   }
   Map<String, dynamic> toJson() {
@@ -164,6 +192,13 @@ class DashboardSummary {
       'lottery_transaction_cost': lotteryTsCost,
       'point_cost': pointCost,
       'quota': quota,
+      'dashboard_type': dashboardType,
+      'quota_one': quotaOne,
+      'quota_two': quotaTwo,
+      'quota_three': quotaThree,
+      'quota_four': quotaFour,
+      'quota_five': quotaFive,
+      'quota_six': quotaSix,
     };
   }
 }

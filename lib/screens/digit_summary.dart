@@ -5,6 +5,7 @@ import 'package:ck_dashboard/core/logger.dart';
 import 'package:ck_dashboard/models/digit_summary.dart';
 import 'package:ck_dashboard/providers/digit_summary_provider.dart';
 import 'package:ck_dashboard/providers/web_socker_provider.dart';
+import 'package:ck_dashboard/widgets/bottom_accumulate.dart';
 import 'package:ck_dashboard/widgets/count_customer.dart';
 import 'package:ck_dashboard/widgets/current_time.dart';
 import 'package:ck_dashboard/widgets/digit_quota.dart' as widget;
@@ -18,11 +19,12 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 final digitOptions = [2, 3, 4, 5, 6];
 
 class SummaryDigitScreen extends ConsumerWidget {
-  const SummaryDigitScreen({super.key});
+  final int digit;
+  const SummaryDigitScreen({super.key, required this.digit});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final digitProvider = ref.watch(DigitSummaryProvider);
+    final digitProvider = ref.watch(DigitSummaryProvider(digit));
 
     return Scaffold(
       backgroundColor: const Color(0xFF1C1C1C),
@@ -54,41 +56,42 @@ class SummaryDigitScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             EndTimeClock(),
+
                             // const SizedBox(height: 8),
-                            SizedBox(
-                              width: 200,
-                              child: DropdownButtonFormField<int>(
-                                value: digitProvider.digit,
-                                hint: Text(
-                                  'Select a digit',
-                                  style: TextStyle(color: Colors.white70),
-                                ),
-                                style: TextStyle(color: Colors.white),
-                                dropdownColor: Colors.black,
-                                iconEnabledColor: Colors.white,
-                                // isExpanded: true,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 8,
-                                  ),
-                                ),
-                                items: digitOptions.map((digit) {
-                                  return DropdownMenuItem(
-                                    value: digit,
-                                    child: Text(digit.toString()),
-                                  );
-                                }).toList(),
-                                onChanged: (newValue) {
-                                  ref
-                                      .read(DigitSummaryProvider.notifier)
-                                      .setDigit(newValue!);
-                                },
-                                validator: (v) =>
-                                    v == null ? 'Please select one' : null,
-                              ),
-                            ),
+                            // SizedBox(
+                            //   width: 200,
+                            //   child: DropdownButtonFormField<int>(
+                            //     value: digitProvider.digit,
+                            //     hint: Text(
+                            //       'Select a digit',
+                            //       style: TextStyle(color: Colors.white70),
+                            //     ),
+                            //     style: TextStyle(color: Colors.white),
+                            //     dropdownColor: Colors.black,
+                            //     iconEnabledColor: Colors.white,
+                            //     // isExpanded: true,
+                            //     decoration: InputDecoration(
+                            //       border: OutlineInputBorder(),
+                            //       contentPadding: EdgeInsets.symmetric(
+                            //         horizontal: 12,
+                            //         vertical: 8,
+                            //       ),
+                            //     ),
+                            //     items: digitOptions.map((digit) {
+                            //       return DropdownMenuItem(
+                            //         value: digit,
+                            //         child: Text('${digit.toString()} ໂຕ'),
+                            //       );
+                            //     }).toList(),
+                            //     onChanged: (newValue) {
+                            //       ref
+                            //           .read(DigitSummaryProvider.notifier)
+                            //           .setDigit(newValue!);
+                            //     },
+                            //     validator: (v) =>
+                            //         v == null ? 'Please select one' : null,
+                            //   ),
+                            // ),
                             const SizedBox(height: 8),
                           ],
                         ),
@@ -114,39 +117,43 @@ class SummaryDigitScreen extends ConsumerWidget {
                   StaggeredGridTile.count(
                     crossAxisCellCount: 5,
                     mainAxisCellCount: 1.3,
-                    child: widget.DigitQuota(),
+                    child: widget.DigitQuota(
+                      digit: digit, 
+                    ),
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: 3,
                     mainAxisCellCount: 2.65,
                     child: FullQuota(
-                      title: 'ตัวเลขที่เต็มโควต้า',
+                      title: 'ເລກທີ່ເຕັມໂຄວຕ້າ',
                       accumulate: digitProvider.digitSummary?.fullQuota ?? [],
                     ),
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: 4,
-                    mainAxisCellCount: 4, //height ratio
+                    mainAxisCellCount: 4.15, //height ratio
                     child: TopAccumulate(
-                      title: '10 ตัวที่ขายมากที่สุด',
+                      title: '10 ໂຕທີ່ຂາຍໄດ້ຫຼາຍທີ່ສຸດ',
+                      digit: digit,
                       accumulate:
                           digitProvider.digitSummary?.topAccumulate ?? [],
                     ),
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: 4,
-                    mainAxisCellCount: 4, //height ratio
-                    child: TopAccumulate(
-                      title: '10 ตัวที่ขายน้อยที่สุด',
+                    mainAxisCellCount: 4.15, //height ratio
+                    child: BottomAccumulate(
+                      title: '10 ໂຕທີ່ຂາຍນ້ອຍທີ່ສຸດ',
+                      digit: digit,
                       accumulate:
                           digitProvider.digitSummary?.bottomAccumulate ?? [],
                     ),
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: 3,
-                    mainAxisCellCount: 2.65,
+                    mainAxisCellCount: 2.8,
                     child: FullQuota(
-                      title: 'ตัวเลขที่ไม่ขาย',
+                      title: 'ເລກທີ່ບໍ່ຂາຍ',
                       accumulate:
                           digitProvider.digitSummary?.notBuyAccumulate ?? [],
                     ),
@@ -157,13 +164,12 @@ class SummaryDigitScreen extends ConsumerWidget {
           ],
         ),
       ),
-    )..listenToWebSocket(ref);
-    ;
+    )..listenToWebSocket(ref, digit);
   }
 }
 
 extension _WebSocketListener on Widget {
-  Widget listenToWebSocket(WidgetRef ref) {
+  Widget listenToWebSocket(WidgetRef ref, int digit) {
     ref.listen<AsyncValue<Map<String, dynamic>>>(wsDataProvider, (prev, next) {
       next.whenData((msg) {
         final payload = msg['value'];
@@ -171,7 +177,7 @@ extension _WebSocketListener on Widget {
           // เลื่อนอัปเดต state ไปหลัง build จบ
           Future.microtask(() {
             ref
-                .read(DigitSummaryProvider.notifier)
+                .read(DigitSummaryProvider(digit).notifier)
                 .handleSocketData(payload as Map<String, dynamic>);
           });
         }

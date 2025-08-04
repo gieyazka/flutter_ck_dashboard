@@ -40,7 +40,6 @@ class AccountResponse {
 Future getUserByUsername({required String username}) async {
   final api = ApiService();
   final jwt = generateJwt({'username': username, 'iss': JWT_ISSUER});
-
   final resp = await api.post(
     '/api/user/get-username',
     data: {'username': username},
@@ -49,6 +48,7 @@ Future getUserByUsername({required String username}) async {
   if (resp.statusCode != 200) {
     throw Exception('Failed to fetch user: ${resp.data['message']}');
   }
+  logger.i('User fetched successfully: ${resp.data}');
   final userData = resp.data['data'] as Map<String, dynamic>;
   if (userData.isEmpty) {
     throw Exception('User not found');
@@ -105,6 +105,9 @@ Future<AccountResponse> getSession() async {
 Future deleteSession() async {
   final service = AppwriteService();
   try {
+    if(service.account == null) {
+     return {'success': false, 'message': 'No active session found'};
+    }
     await service.account.deleteSession(sessionId: "current");
     return {'success': true, 'message': 'Session deleted successfully'};
   } catch (e) {

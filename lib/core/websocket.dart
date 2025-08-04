@@ -15,7 +15,7 @@ class WebSocketService {
   final _inController = StreamController<Map<String, dynamic>>.broadcast();
   bool _closed = false;
   final Uri uri = Uri.parse(
-    WEBSOCKET_URL ?? 'wss://demo.mylaos.life/api/calculation/realtime',
+    WEBSOCKET_URL ?? 'wss://admin.mylaos.life/api/calculation/realtime',
   );
 
   WebSocketService({this.reconnectDelay = const Duration(seconds: 2)}) {

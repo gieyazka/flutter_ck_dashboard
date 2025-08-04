@@ -52,11 +52,19 @@ class SummaryNotifier extends StateNotifier<SummaryState> {
   void loadSummary() async {
     state = state.copyWith(isLoading: true, error: null);
     final lotteryDate = _ref.read(lotteryDateProvider).lotteryDate;
-    final data = await getMainDashboard(lotteryDateId: lotteryDate!.id);
+    final data =  await getMainDashboard(lotteryDateId: lotteryDate!.id) as SummaryDashboard;
+
+    final newRevenue = data.dashboardSummary.fold(
+      0.0,
+      (previousValue, element) => previousValue + element.revenue,
+    );
     state = state.copyWith(
       isLoading: false,
       error: null,
-      summaryDashboard: data,
+      summaryDashboard: SummaryDashboard(
+        sumRevenue: newRevenue.toInt(),
+        dashboardSummary: data.dashboardSummary,
+      ),
     );
   }
 
@@ -70,43 +78,35 @@ class SummaryNotifier extends StateNotifier<SummaryState> {
   }
 
   void handleSocketData(Map<String, dynamic> data) {
-    // final oldQuota = state.summaryDashboard?.quota;
-    // final topAcc = data['topAccumulate'] as List<dynamic>?;
-    // final bottomAcc = data['bottomAccumulate'] as List<dynamic>?;
-    // final notBuyAcc = data['notBuyAccumulate'] as List<dynamic>?;
-    // final fullQuta = data['notSellAccumulate'] as List<dynamic>?;
-    // // final userCount = data["userCount"];
-    // final dashboardSummary = data['dashboardSummary'] as Map<String, dynamic>?;
+    final oldQuota = state.summaryDashboard?.dashboardSummary;
+    // final sumRevenue =
+    //     data['sumRevenue'] as num? ?? state.summaryDashboard!.sumRevenue;
+    _ref
+        .read(lotteryDateProvider.notifier)
+        .setLotteryDate(LotteryDateAppwrite.fromJson(data["userCount"]));
 
-    // _ref
-    //     .read(lotteryDateProvider.notifier)
-    //     .setLotteryDate(LotteryDateAppwrite.fromJson(data["userCount"]));
+  final dashboardSummary = (data['dashboardSummary'] as List)
+            .map((e) => SummaryData.fromJson(e))
+            .toList();
+  final newRevenue = dashboardSummary.fold(
+      0.0,
+      (previousValue, element) => previousValue + element.quota,
+    );
+    state = state.copyWith(
+      summaryDashboard: SummaryDashboard(
+        sumRevenue: newRevenue.toInt(),
+        dashboardSummary: dashboardSummary,
+      ),
 
-    // state = state.copyWith(
-    //   digitSummary: DigitSummary(
-    //     digitQuota: oldQuota!,
-    //     topAccumulate:
-    //         topAcc?.map((item) => Accumulate.fromJson(item)).toList() ?? [],
-    //     bottomAccumulate:
-    //         bottomAcc?.map((item) => Accumulate.fromJson(item)).toList() ?? [],
-    //     notBuyAccumulate:
-    //         notBuyAcc?.map((item) => Accumulate.fromJson(item)).toList() ?? [],
-    //     fullQuota:
-    //         fullQuta?.map((item) => Accumulate.fromJson(item)).toList() ?? [],
-    //     dashboardSummary: dashboardSummary != null
-    //         ? DashboardSummary.fromJson(dashboardSummary)
-    //         : DashboardSummary(
-    //             id: '',
-    //             lotteryDateId: '',
-    //             revenue: 0,
-    //             type: 0,
-    //             bankWinCost: 0,
-    //             lotteryTsCost: 0,
-    //             pointCost: 0,
-    //             quota: 0,
-    //           ),
-    //   ),
-    // );
+      // digitSummary: DigitSummary.fromJson(data),
+      // topAccumulate: topAcc,
+      // bottomAccumulate: bottomAcc,
+      // notBuyAccumulate: notBuyAcc,
+      // notSellAccumulate: fullQuta,
+      // dashboardSummary: dashboardSummary != null
+      //     ? DashboardSummary.fromJson(dashboardSummary)
+      //     : null,
+    );
 
     // แล้วอัปเดต state
   }

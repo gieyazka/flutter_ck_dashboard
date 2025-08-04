@@ -4,7 +4,7 @@ import 'package:ck_dashboard/core/websocket.dart';
 
 // 1) Provider สำหรับสร้าง service (singleton)
 final wsServiceProvider = Provider<WebSocketService>((ref) {
-  final svc = WebSocketService(reconnectDelay: const Duration(seconds: 2));
+  final svc = WebSocketService(reconnectDelay: const Duration(seconds: 1));
   ref.onDispose(svc.close);
   return svc;
 });

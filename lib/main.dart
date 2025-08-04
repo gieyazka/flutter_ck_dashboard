@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:ck_dashboard/core/variable.dart';
+
 import 'platform/platform.dart';
 import 'package:ck_dashboard/core/api/user.dart';
 import 'package:ck_dashboard/core/logger.dart';
@@ -20,6 +24,25 @@ String helloWorld(Ref ref) {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // try {
+  //   final result = await InternetAddress.lookup(Uri.parse(NEXT_SERVER).host);
+  //   print('✅ DNS resolved: ${result.first.address}');
+  // } catch (e) {
+  //   print('❌ DNS lookup failed: $e');
+  // }
+  // try {
+  //   final isOnline = await InternetAddress.lookup('google.com');
+  //   print('🌐 Online: ${isOnline.isNotEmpty}');
+  // } catch (e) {
+  //   print(e);
+  // }
+  // print("🧪 JWT_ISSUER = $JWT_ISSUER");
+  // print("🧪 JWT_SECRET = $JWT_SECRET");
+  // print("🧪 APPWRITE_ENDPOINT = $APPWRITE_ENDPOINT");
+  // print("🧪 APPWRITE_PROJECT = $APPWRITE_PROJECT");
+  // print("🧪 NEXT_SERVER = $NEXT_SERVER");
+  // print("🧪 WEBSOCKET_URL = $WEBSOCKET_URL");
+
   // โหลดแบบชี้ path เต็มไปเลย
   // try {
   //   await dotenv.load();
@@ -32,21 +55,7 @@ void main() async {
   } catch (e) {
     logger.e('Error deleting session: $e');
   }
-  // สำหรับแพลตฟอร์ม desktop เท่านั้น
 
-  if (!kIsWeb && PlatformWrapper.isWindows ||
-      PlatformWrapper.isLinux ||
-      PlatformWrapper.isMacOS) {
-    // ตั้งขนาดหน้าต่างเริ่มต้น
-    await DesktopWindow.setWindowSize(const Size(1280, 720));
-
-    // ล็อกขนาดขั้นต่ำ = ขนาดสูงสุด = 1280×720
-    await DesktopWindow.setMinWindowSize(const Size(1280, 720));
-    await DesktopWindow.setMaxWindowSize(const Size(1280, 720));
-
-    // (ตัวเลือก) ตั้ง title ของหน้าต่าง (Windows เท่านั้น)
-    // DesktopWindow.setWindowTitle('CK Group Dashboard');
-  }
 
   runApp(ProviderScope(child: MyApp()));
 }

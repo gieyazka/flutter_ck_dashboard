@@ -83,19 +83,20 @@ class SummaryScreen extends ConsumerWidget {
                   StaggeredGridTile.count(
                     crossAxisCellCount: 3,
                     mainAxisCellCount: 1.3,
-                    child: TotalBuy()
+                    child: TotalBuy(),
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: 3,
-                    mainAxisCellCount: 2.65,
-                    child: FullQuota(
-                      title: 'ตัวเลขที่เต็มโควต้า',
-                      accumulate: [],
-                    ),
+                    mainAxisCellCount: 2.5,
+                    child: SizedBox(),
+                    // child: FullQuota(
+                    //   title: 'ตัวเลขที่เต็มโควต้า',
+                    //   accumulate: [],
+                    // ),
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: 5,
-                    mainAxisCellCount: 4, //height ratio
+                    mainAxisCellCount: 3.7, //height ratio
                     child: AllQuota(
                       title: 'ເລກໂຄຕ້າ',
                       dashboardSummary:
@@ -108,8 +109,9 @@ class SummaryScreen extends ConsumerWidget {
 
                   StaggeredGridTile.count(
                     crossAxisCellCount: 3,
-                    mainAxisCellCount: 2.65,
-                    child: FullQuota(title: 'ตัวเลขที่ไม่ขาย', accumulate: []),
+                    mainAxisCellCount: 2.5,
+                    child: SizedBox(),
+                    // child: FullQuota(title: 'ตัวเลขที่ไม่ขาย', accumulate: []),
                   ),
                 ],
               ),
@@ -127,6 +129,7 @@ extension _WebSocketListener on Widget {
     ref.listen<AsyncValue<Map<String, dynamic>>>(wsDataProvider, (prev, next) {
       next.whenData((msg) {
         final payload = msg['value'];
+        logger.d('WebSocket message received: ${jsonEncode(payload)}');
         if (payload != null) {
           Future.microtask(() {
             ref

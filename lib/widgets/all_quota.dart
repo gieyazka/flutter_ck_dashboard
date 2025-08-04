@@ -26,7 +26,7 @@ class AllQuota extends ConsumerWidget {
       clipBehavior: Clip.antiAlias,
       color: Colors.grey[850],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.fromLTRB(16, 4, 4, 16),
       child: Container(
         // padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
         child: Column(
@@ -60,8 +60,8 @@ class AllQuota extends ConsumerWidget {
                 itemBuilder: (context, i) {
                   final item = this.dashboardSummary[i];
 
-                  final ratio = item.quota > 0
-                      ? (item.quota / item.maxQuota).clamp(0.0, 1.0)
+                  final ratio = item.revenue > 0
+                      ? (item.revenue / item.maxQuota).clamp(0.0, 1.0)
                       : 0.0;
                   Color barColor;
                   if (ratio > 0.8) {
@@ -135,10 +135,11 @@ class AllQuota extends ConsumerWidget {
                                     Positioned.fill(
                                       child: Center(
                                         child: Text(
-                                          '${_fmt(item.quota.toInt())} / ${_fmt(item.maxQuota.toInt())}',
+                                          // '${_fmt(item.quota.toInt())} / ${_fmt(item.maxQuota.toInt())}',
+                                          '${_fmt(item.revenue.toInt())} / ${_fmt(item.maxQuota.toInt())}',
                                           style: TextStyle(
                                             color: fontColor,
-                                            fontSize: 50,
+                                            fontSize: 44,
                                             fontWeight: FontWeight.w800,
                                           ),
                                         ),
