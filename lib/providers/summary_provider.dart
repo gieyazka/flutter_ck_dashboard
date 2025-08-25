@@ -52,7 +52,12 @@ class SummaryNotifier extends StateNotifier<SummaryState> {
   void loadSummary() async {
     state = state.copyWith(isLoading: true, error: null);
     final lotteryDate = _ref.read(lotteryDateProvider).lotteryDate;
-    final data =  await getMainDashboard(lotteryDateId: lotteryDate!.id) as SummaryDashboard;
+    final data =
+        await getMainDashboard(
+              lotteryDateId: lotteryDate!.id,
+              lotteryDateStr: formatYMD(lotteryDate.dateTime),
+            )
+            as SummaryDashboard;
 
     final newRevenue = data.dashboardSummary.fold(
       0.0,
@@ -85,10 +90,10 @@ class SummaryNotifier extends StateNotifier<SummaryState> {
         .read(lotteryDateProvider.notifier)
         .setLotteryDate(LotteryDateAppwrite.fromJson(data["userCount"]));
 
-  final dashboardSummary = (data['dashboardSummary'] as List)
-            .map((e) => SummaryData.fromJson(e))
-            .toList();
-  final newRevenue = dashboardSummary.fold(
+    final dashboardSummary = (data['dashboardSummary'] as List)
+        .map((e) => SummaryData.fromJson(e))
+        .toList();
+    final newRevenue = dashboardSummary.fold(
       0.0,
       (previousValue, element) => previousValue + element.quota,
     );

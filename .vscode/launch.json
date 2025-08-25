@@ -7,11 +7,12 @@
       "type": "dart",
       "program": "lib/main.dart",
       "args": [
-        "--web-hostname=localhost",
-        "--web-port=1800",
+        // "--web-hostname=localhost",
+        // "--web-port=1800",
         "--dart-define=APPWRITE_ENDPOINT=https://baas.moevedigital.com/v1",
         "--dart-define=APPWRITE_PROJECT=667afb24000fbd66b4df",
-        "--dart-define=NEXT_SERVER=https://admin.mylaos.life/",
+        // "--dart-define=NEXT_SERVER=https://admin.mylaos.life/",
+        "--dart-define=NEXT_SERVER=http://localhost:3000/",
         "--dart-define=JWT_SECRET=T0LPZL+X1Faej0wikHcMGazu9BilhgQ6vBMxckEFmvvLMkPexH9MCG1x/GcjeSnF",
         "--dart-define=JWT_ISSUER=ck_dashboard",
         "--dart-define=WEBSOCKET_URL=wss://admin.mylaos.life/api/calculation/realtime"

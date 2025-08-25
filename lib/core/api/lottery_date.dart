@@ -52,14 +52,16 @@ Future getDigitSummary({
   return DigitSummary.fromJson(data);
 }
 
-Future getMainDashboard({required String lotteryDateId}) async {
+Future getMainDashboard({
+  required String lotteryDateId,
+  required String lotteryDateStr,
+}) async {
   final api = ApiService();
   final jwt = generateJwt({'iss': JWT_ISSUER});
 
   final resp = await api.post(
     '/api/dashboard/mainDashboard',
-    // data: {'lotteryDateId': "686c927b0028825bbee4"},
-    data: {'lotteryDateId': lotteryDateId},
+    data: {'lotteryDateId': lotteryDateId, "lotteryDateStr": lotteryDateStr},
     options: Options(headers: {'Authorization': 'Bearer $jwt'}),
   );
   if (resp.statusCode != 200) {
@@ -71,8 +73,6 @@ Future getMainDashboard({required String lotteryDateId}) async {
   if (data.isEmpty) {
     throw Exception('User not found');
   }
-
-
 
   return SummaryDashboard.fromJson(data);
 }
