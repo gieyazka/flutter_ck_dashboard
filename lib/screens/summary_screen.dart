@@ -128,8 +128,9 @@ extension _WebSocketListener on Widget {
   Widget listenToWebSocket(WidgetRef ref) {
     ref.listen<AsyncValue<Map<String, dynamic>>>(wsDataProvider, (prev, next) {
       next.whenData((msg) {
+        logger.i('WebSocket message 131: ${jsonEncode(msg)}');
         final payload = msg['value'];
-        logger.d('WebSocket message received: ${jsonEncode(payload)}');
+        logger.d('WebSocket payload: ${jsonEncode(payload)}');
         if (payload != null) {
           Future.microtask(() {
             ref

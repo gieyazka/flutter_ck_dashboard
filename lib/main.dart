@@ -43,19 +43,17 @@ void main() async {
   // print("🧪 NEXT_SERVER = $NEXT_SERVER");
   // print("🧪 WEBSOCKET_URL = $WEBSOCKET_URL");
 
-  // โหลดแบบชี้ path เต็มไปเลย
-  // try {
-  //   await dotenv.load();
-  // } catch (e) {
-  //   logger.e('.env failed to load  $e');
-  // }
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    logger.e('.env failed to load  $e');
+  }
 
   try {
     await deleteSession();
   } catch (e) {
     logger.e('Error deleting session: $e');
   }
-
 
   runApp(ProviderScope(child: MyApp()));
 }

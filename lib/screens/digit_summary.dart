@@ -117,9 +117,7 @@ class SummaryDigitScreen extends ConsumerWidget {
                   StaggeredGridTile.count(
                     crossAxisCellCount: 5,
                     mainAxisCellCount: 1.3,
-                    child: widget.DigitQuota(
-                      digit: digit, 
-                    ),
+                    child: widget.DigitQuota(digit: digit),
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: 3,
@@ -172,7 +170,9 @@ extension _WebSocketListener on Widget {
   Widget listenToWebSocket(WidgetRef ref, int digit) {
     ref.listen<AsyncValue<Map<String, dynamic>>>(wsDataProvider, (prev, next) {
       next.whenData((msg) {
+        // logger.i('WebSocket message: ${jsonEncode(msg)}');
         final payload = msg['value'];
+        // logger.i('WebSocket payload: ${jsonEncode(payload)}');
         if (payload != null) {
           // เลื่อนอัปเดต state ไปหลัง build จบ
           Future.microtask(() {

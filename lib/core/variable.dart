@@ -1,6 +1,8 @@
-const String JWT_ISSUER = String.fromEnvironment('JWT_ISSUER');
-const String JWT_SECRET = String.fromEnvironment('JWT_SECRET');
-const String APPWRITE_ENDPOINT = String.fromEnvironment('APPWRITE_ENDPOINT');
-const String APPWRITE_PROJECT = String.fromEnvironment('APPWRITE_PROJECT');
-const String NEXT_SERVER = String.fromEnvironment('NEXT_SERVER');
-const String WEBSOCKET_URL = String.fromEnvironment('WEBSOCKET_URL');
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+String get JWT_ISSUER => dotenv.get('JWT_ISSUER');
+String get JWT_SECRET => dotenv.get('JWT_SECRET');
+String get APPWRITE_ENDPOINT => dotenv.get('APPWRITE_ENDPOINT');
+String get APPWRITE_PROJECT => dotenv.get('APPWRITE_PROJECT');
+String get NEXT_SERVER => dotenv.get('NEXT_SERVER');
+String get WEBSOCKET_URL => dotenv.get('WEBSOCKET_URL');
